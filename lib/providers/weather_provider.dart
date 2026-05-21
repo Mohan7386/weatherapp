@@ -1,33 +1,50 @@
-import 'package:flutter/cupertino.dart';
-import 'package:weatherapp/repositories/weather_repository.dart';
+import 'package:flutter/material.dart';
 
 import '../models/weather_model.dart';
+import '../repositories/weather_repository.dart';
 
-enum WeatherState { idle, loading, success, error}
+enum WeatherState {
+  idle,
+  loading,
+  success,
+  error,
+}
 
-class WeatherProvider extends ChangeNotifier {
-  final WeatherRepository _repository = WeatherRepository();
+class WeatherProvider
+    extends ChangeNotifier {
 
-  Weather? _weather;
-  WeatherState _state = WeatherState.idle;
-  String _error = "";
+  final WeatherRepository _repository =
+  WeatherRepository();
 
-  Weather? get weather => _weather;
-  WeatherState get state => _state;
-  String get error => _error;
+  WeatherModel? weather;
 
-  Future<void> fetchWeather(String city) async{
-    print("FETCH WEATHER CALLED");
-    _state = WeatherState.loading;
-    notifyListeners();
+  WeatherState state =
+      WeatherState.idle;
+
+  String error = "";
+
+  Future<void> fetchWeather(
+      String city) async {
 
     try {
-      _weather = await _repository.getWeather(city);
-      _state = WeatherState.success;
-    } catch(e) {
-      _error = e.toString();
-      _state = WeatherState.error;
+
+      state = WeatherState.loading;
+
+      notifyListeners();
+
+      weather =
+      await _repository.getWeather(
+        city,
+      );
+
+      state = WeatherState.success;
+
+    } catch (e) {
+      weather = null;
+      error = "City Not Found";
+      state = WeatherState.error;
     }
+
     notifyListeners();
   }
 }

@@ -1,27 +1,31 @@
-class Weather {
+class WeatherModel {
   final String city;
-  final double temperature;
+  final double temp;
+  final double tempMin;
+  final double tempMax;
+  final double feelsLike;
   final String condition;
   final int humidity;
+  final double windSpeed;
+  final double windDeg;
+  final int visibility;
+  final int pressure;
+  final List hourly;
+  final List daily;
 
-  Weather({
+  WeatherModel({
     required this.city,
-    required this.temperature,
+    required this.temp,
+    required this.tempMin,
+    required this.tempMax,
+    required this.feelsLike,
     required this.condition,
     required this.humidity,
+    required this.windSpeed,
+    required this.windDeg,
+    required this.visibility,
+    required this.pressure,
+    required this.hourly,
+    required this.daily,
   });
-
-  factory Weather.fromJson(Map<String, dynamic> json) {
-    print("JSON DATA: $json");
-
-    return Weather(
-      city: json['name'] ?? "Unknown",
-      temperature: (json['main']?['temp'] ?? 0).toDouble(),
-      condition: json['weather'] != null && json['weather'].length > 0
-          ? json['weather'][0]['main']
-          : "Unknown",
-      humidity: json['main']?['humidity'] ?? 0,
-    );
-  }
-
 }
